@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Admin Panel</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles.css')}}"
+    />
+  </head>
+
+  <body>
+    <header>
+      {%if name %}
+      <h2>Hello there, {{ name }}!</h2>
+      <p>It's {{ date.strftime("%A, %d %B, %Y at %X") }}</p>
+      {% endif %}
+    </header>
+
+    <main>
+      <p>Click link to the GRU water quality report:</p>
+
+      <form method="GET">
+        <input type="submit" value="GRU WATER QUALITY REPORT" />
+      </form>
+    </main>
+
+    {% block scripts %}
+    <script type="text/javascript">
+      document.querySelector("form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        fetch("/api/water", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/pdf",
+            "Content-Disposition": "attachment; filename='gru-water.pdf'",
+            "Content-Transfer-Encoding": "binary",
+          },
+        })
+          .then((res) => res.blob())
+          .then((blob) => {
+            const url = window.URL.createObjectURL(new Blob([blob]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", `gru-water.pdf`);
+
+            // Append to html link element page
+            document.body.appendChild(link);
+
+            // Start download
+            link.click();
+
+            // Clean up and remove the link
+            link.parentNode.removeChild(link);
+          });
+      });
+    </script>
+    {% endblock %}
+  </body>
+</html>

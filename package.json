@@ -1,0 +1,14 @@
+{
+  "name": "feathr",
+  "version": "1.0.0",
+  "description": "basic phython app",
+  "main": "helloy.py",
+  "scripts": {
+    "start": "flask run",
+    "debug": "flask run --debug",
+    "reqs": "pipreqs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
