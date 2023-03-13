@@ -14,7 +14,7 @@
     <header>
       {%if name %}
       <h2>Hello there, {{ name }}!</h2>
-      <p>It's {{ date.strftime("%A, %d %B, %Y at %X") }}</p>
+      <p>It's {{ date.strftime("%c") }}</p>
       {% endif %}
     </header>
 
