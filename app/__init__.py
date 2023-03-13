@@ -7,12 +7,10 @@ from flask_cors import CORS
 
 def create_app():
     app = Flask(__name__)
-    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     register_blueprints(app)
     register_errors(app)
-
-    # print(f"\n\n{__name__}\n\n")
 
     return app
 

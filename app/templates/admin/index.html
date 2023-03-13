@@ -27,34 +27,41 @@
     </main>
 
     {% block scripts %}
-    <script type="text/javascript">
-      document.querySelector("form").addEventListener("submit", function (e) {
-        e.preventDefault();
-        fetch("/api/water", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/pdf",
-            "Content-Disposition": "attachment; filename='gru-water.pdf'",
-            "Content-Transfer-Encoding": "binary",
-          },
-        })
-          .then((res) => res.blob())
-          .then((blob) => {
-            const url = window.URL.createObjectURL(new Blob([blob]));
-            const link = document.createElement("a");
-            link.href = url;
-            link.setAttribute("download", `gru-water.pdf`);
+    <script type="text/javascript" async>
+      document
+        .querySelector("form")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
 
-            // Append to html link element page
-            document.body.appendChild(link);
+          try {
+            await fetch("/api/water", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/pdf",
+                "Content-Disposition": "attachment; filename='gru-water.pdf'",
+                "Content-Transfer-Encoding": "binary",
+              },
+            })
+              .then((res) => res.blob())
+              .then((blob) => {
+                const url = window.URL.createObjectURL(new Blob([blob]));
+                const link = document.createElement("a");
+                link.href = url;
+                link.setAttribute("download", `gru-water.pdf`);
 
-            // Start download
-            link.click();
+                // Append to html link element page
+                document.body.appendChild(link);
 
-            // Clean up and remove the link
-            link.parentNode.removeChild(link);
-          });
-      });
+                // Start download
+                link.click();
+
+                // Clean up and remove the link
+                link.parentNode.removeChild(link);
+              });
+          } catch (error) {
+            console.error("Can&apos; fetch posts");
+          }
+        });
     </script>
     {% endblock %}
   </body>
